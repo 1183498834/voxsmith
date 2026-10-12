@@ -4,7 +4,7 @@
 
 # VoxSmith
 
-**Turn written text into narrated MP3 audio — one consistent voice, one consistent level.**
+**A general-purpose text-to-speech skill: turn any written text into narrated MP3 audio, in one consistent voice and at one consistent level.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)
@@ -20,18 +20,21 @@
 
 ### What it is
 
-VoxSmith is a Codex skill for text-to-speech. Hand it a UTF-8 text file and it
-returns a narration-ready MP3: it selects a speech engine that works on your
-machine, renders the audio, normalizes the level, and reports what it produced.
+VoxSmith is a **general-purpose** Codex skill for text-to-speech. It makes no
+assumptions about the subject matter, the language, or how the audio will be
+used. Hand it any UTF-8 text file and it returns a narration-ready MP3: it
+selects a speech engine that works on your machine, renders the audio,
+normalizes the level, and reports what it produced.
 
-It is designed for scripts you intend to keep and reuse — a spoken
-self-introduction, the sections of a talk, a reading of an article, study notes,
-or a draft voiceover.
+Being general-purpose, it suits both one-off conversions and scripts you intend
+to keep and reuse — a spoken self-introduction, the sections of a talk, a
+reading of an article, study notes, or a draft voiceover.
 
 ### What it does
 
 | Capability | Description |
 | --- | --- |
+| **Works with any content** | No domain-specific assumptions: technical papers, fiction, teaching material, announcements, and personal scripts are all treated the same |
 | **Narrate a script** | One command turns a text file into an MP3, with voice, pace, and pause length under your control |
 | **Keep a set in one voice** | Batch mode locks a single engine and voice for every part, so a multi-section recording sounds like one speaker |
 | **Join a set into one file** | An optional concat step merges the parts, in order, into a single deliverable |
@@ -42,6 +45,9 @@ or a draft voiceover.
 | **Run offline** | The local neural engine needs no network after its one-time setup |
 
 ### Where it applies
+
+Because the skill is general-purpose, it fits wherever written text should be
+heard. Common examples:
 
 - **Interviews and applications.** Turn a prepared self-introduction or a
   research summary into audio you can rehearse against, and hear how it lands
@@ -180,16 +186,19 @@ MIT — see [LICENSE](LICENSE).
 
 ## 中文
 
+**通用型文本转语音技能：把任意文本转成朗读 MP3，音色统一、音量统一。**
+
 ### 这是什么
 
-VoxSmith 是一个用于文本转语音的 Codex 技能。给它一个 UTF-8 文本文件，它会返回一个可以直接使用的朗读 MP3：自动挑选在本机可用的语音引擎、合成音频、统一响度，并输出一份说明本次生成结果的报告。
+VoxSmith 是一个**通用型**的文本转语音 Codex 技能。它不限定题材、语言，也不预设音频会用在什么场合。给它任意一个 UTF-8 文本文件，它会返回一个可以直接使用的朗读 MP3：自动挑选在本机可用的语音引擎、合成音频、统一响度，并输出一份说明本次生成结果的报告。
 
-它面向那些需要反复使用的稿子——面试自我介绍、演讲稿的各个章节、文章朗读、学习笔记，以及配音草稿。
+正因为是通用技能，它既适合临时转换一次，也适合需要反复使用的稿子——面试自我介绍、演讲稿的各个章节、文章朗读、学习笔记，以及配音草稿。
 
 ### 能做什么
 
 | 能力 | 说明 |
 | --- | --- |
+| **任意内容都能用** | 没有领域假设：技术论文、小说、教学材料、播报文案、个人稿件一视同仁 |
 | **朗读单篇文稿** | 一条命令把文本文件转成 MP3，音色、语速、停顿长度都可控 |
 | **整组统一音色** | 批量模式为所有段落锁定同一个引擎和同一个音色，多章节录音听起来像同一个人的声音 |
 | **多段合并成一个文件** | 可选的合并步骤按顺序把各段拼成单一成品 |
@@ -200,6 +209,8 @@ VoxSmith 是一个用于文本转语音的 Codex 技能。给它一个 UTF-8 文
 | **可离线运行** | 本地神经语音引擎在完成一次性配置后无需联网 |
 
 ### 适用场景
+
+由于这是一个通用技能，凡是"文字需要被听见"的地方都适用。常见的例子包括：
 
 - **面试与申请。** 把准备好的自我介绍或研究简介转成音频，反复跟读练习，在真正说给别人听之前先听自己的表达效果。
 - **语言学习。** 用自己的文本生成听力材料，配合语速控制做影子跟读。

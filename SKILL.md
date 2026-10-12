@@ -10,6 +10,10 @@ metadata:
 Produce a natural-sounding MP3 from a text file, with loudness normalized so
 that several files can be played back to back without a volume jump.
 
+This is a general-purpose skill. It makes no assumptions about the subject
+matter, the language, or how the audio will be used, so apply it to any text
+the user wants spoken rather than treating it as being for one kind of work.
+
 `scripts/tts.py` does the whole job: it picks a working speech engine,
 synthesizes the audio, encodes it to MP3, normalizes loudness, and prints a
 JSON report as evidence. Run it rather than assembling a pipeline from
