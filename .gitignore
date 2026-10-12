@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+
+# Generated audio and audition pages
+*.mp3
+*.wav
+voice-previews/
+previews/
+out/
+
+# Local caches
+.cache/

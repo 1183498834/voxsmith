@@ -1,0 +1,6 @@
+# Keep checked-out scripts and docs on LF so they behave the same on every
+# platform this skill runs on, whatever the local core.autocrlf setting is.
+* text=auto eol=lf
+
+*.svg text
+*.png binary
