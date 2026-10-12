@@ -103,7 +103,7 @@ route speech synthesis through it.
 blocked. `piper` is the answer: it works with no network once cached, and
 `setup_piper.py` already falls back to `hf-mirror.com` for the model download
 and to a GitHub proxy for the runtime. After one successful setup run, set
-`CODEX_TTS_HOME` to that cache directory to reuse it from anywhere.
+`VOXSMITH_HOME` to that cache directory to reuse it from anywhere.
 
 **`sapi` on a non-Windows host** is unavailable by design; `System.Speech`
 does not exist there. On Windows, `--list-voices` prints the installed names to

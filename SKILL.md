@@ -14,6 +14,12 @@ This is a general-purpose skill. It makes no assumptions about the subject
 matter, the language, or how the audio will be used, so apply it to any text
 the user wants spoken rather than treating it as being for one kind of work.
 
+Nothing here depends on which agent is running it. The instructions are this
+file, and the working parts are plain Python that calls speech engines, ffmpeg,
+and the network — no SDK, no API key, no agent-specific runtime or environment.
+The same folder also works under other agent harnesses and runs directly from a
+shell.
+
 `scripts/tts.py` does the whole job: it picks a working speech engine,
 synthesizes the audio, encodes it to MP3, normalizes loudness, and prints a
 JSON report as evidence. Run it rather than assembling a pipeline from

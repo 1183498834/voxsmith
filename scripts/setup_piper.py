@@ -47,13 +47,16 @@ VOICE_HOSTS = [
 
 
 def default_tools_dir() -> Path:
-    override = os.environ.get("CODEX_TTS_HOME")
-    if override:
-        return Path(override)
+    # VOXSMITH_HOME is the documented override. CODEX_TTS_HOME is honoured so
+    # that caches created before the skill was renamed keep working.
+    for variable in ("VOXSMITH_HOME", "CODEX_TTS_HOME"):
+        override = os.environ.get(variable)
+        if override:
+            return Path(override)
     if sys.platform == "win32":
         base = os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")
-        return Path(base) / "codex-tts"
-    return Path.home() / ".cache" / "codex-tts"
+        return Path(base) / "voxsmith"
+    return Path.home() / ".cache" / "voxsmith"
 
 
 def platform_key() -> str:
@@ -102,7 +105,7 @@ def _curl(url: str, tmp: Path) -> None:
 
 def _urllib(url: str, tmp: Path, timeout: int) -> None:
     """Fallback used when curl is not installed."""
-    req = urllib.request.Request(url, headers={"User-Agent": "codex-tts/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "voxsmith/1.0"})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         header = resp.headers.get("Content-Length")
         expected = int(header) if header and header.isdigit() else None

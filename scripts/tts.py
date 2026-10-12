@@ -797,13 +797,16 @@ def main() -> int:
 
 
 def _default_tools_dir() -> Path:
-    override = os.environ.get("CODEX_TTS_HOME")
-    if override:
-        return Path(override)
+    # VOXSMITH_HOME is the documented override. CODEX_TTS_HOME is honoured so
+    # that caches created before the skill was renamed keep working.
+    for variable in ("VOXSMITH_HOME", "CODEX_TTS_HOME"):
+        override = os.environ.get(variable)
+        if override:
+            return Path(override)
     if sys.platform == "win32":
         base = os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")
-        return Path(base) / "codex-tts"
-    return Path.home() / ".cache" / "codex-tts"
+        return Path(base) / "voxsmith"
+    return Path.home() / ".cache" / "voxsmith"
 
 
 def list_voices(args: argparse.Namespace) -> dict:

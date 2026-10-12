@@ -4,11 +4,14 @@
 
 # VoxSmith
 
-**A general-purpose text-to-speech skill: turn any written text into narrated MP3 audio, in one consistent voice and at one consistent level.**
+**Turn any written text into narrated MP3 audio — one consistent voice, one consistent level.**
+
+<sub>A general-purpose skill that is not tied to any one agent: the same folder runs in Codex, Claude Code, and other agent harnesses, or straight from the command line.</sub>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)
+![Agents](https://img.shields.io/badge/agents-Codex%20%7C%20Claude%20Code%20%7C%20more-blueviolet.svg)
 
 <a href="#english">English</a> · <a href="#中文">中文</a>
 
@@ -20,11 +23,17 @@
 
 ### What it is
 
-VoxSmith is a **general-purpose** Codex skill for text-to-speech. It makes no
-assumptions about the subject matter, the language, or how the audio will be
-used. Hand it any UTF-8 text file and it returns a narration-ready MP3: it
-selects a speech engine that works on your machine, renders the audio,
-normalizes the level, and reports what it produced.
+VoxSmith is a **general-purpose** text-to-speech skill. It makes no assumptions
+about the subject matter, the language, or how the audio will be used — and no
+assumptions about the agent running it. Hand it any UTF-8 text file and it
+returns a narration-ready MP3: it selects a speech engine that works on your
+machine, renders the audio, normalizes the level, and reports what it produced.
+
+The instructions are a plain `SKILL.md` and the working parts are plain Python
+that talks only to speech engines, ffmpeg, and the network. There is no SDK, no
+API key, and no dependency on a particular agent runtime, so the same folder can
+be used by Codex, Claude Code, or another agent harness, or invoked directly
+from a shell with no agent in the loop at all.
 
 Being general-purpose, it suits both one-off conversions and scripts you intend
 to keep and reuse — a spoken self-introduction, the sections of a talk, a
@@ -35,6 +44,7 @@ reading of an article, study notes, or a draft voiceover.
 | Capability | Description |
 | --- | --- |
 | **Works with any content** | No domain-specific assumptions: technical papers, fiction, teaching material, announcements, and personal scripts are all treated the same |
+| **Runs in any agent** | A plain `SKILL.md` folder plus dependency-free Python scripts: no SDK, no API key, no agent-specific runtime |
 | **Narrate a script** | One command turns a text file into an MP3, with voice, pace, and pause length under your control |
 | **Keep a set in one voice** | Batch mode locks a single engine and voice for every part, so a multi-section recording sounds like one speaker |
 | **Join a set into one file** | An optional concat step merges the parts, in order, into a single deliverable |
@@ -75,24 +85,55 @@ Voice availability depends on the engine. The local Piper engine covers dozens
 of languages through its voice catalogue, the Google engine takes a language
 code, and the Edge neural voices span a wide range of locales.
 
+Downloaded voice models are cached in `~/.cache/voxsmith`
+(`%LOCALAPPDATA%\voxsmith` on Windows). Set `VOXSMITH_HOME` to relocate that
+cache, for example to share a single copy between several agent harnesses.
+
 ### Installation
 
-Clone the repository into your Codex skills directory.
+Clone the repository into the skills directory that your agent reads. The folder
+contents are identical for all of them.
+
+| Agent | Skills directory |
+| --- | --- |
+| Codex | `~/.codex/skills/` |
+| Claude Code | `~/.claude/skills/` |
+| Shared or other harnesses | `~/.agents/skills/` |
 
 Linux and macOS:
 
 ```bash
-git clone https://github.com/1183498834/voxsmith ~/.codex/skills/voxsmith
+git clone https://github.com/1183498834/voxsmith ~/.claude/skills/voxsmith
 ```
 
 Windows PowerShell:
 
 ```powershell
-git clone https://github.com/1183498834/voxsmith "$env:USERPROFILE\.codex\skills\voxsmith"
+git clone https://github.com/1183498834/voxsmith "$env:USERPROFILE\.claude\skills\voxsmith"
 ```
 
-Then ask for a spoken version of a text, or invoke the skill directly as
-`$voxsmith`.
+Then ask your agent for a spoken version of a text, or invoke the skill by name.
+Cloning once is enough if your agents share a skills directory; otherwise clone
+into each location, or point them at a single copy:
+
+```bash
+ln -s ~/.claude/skills/voxsmith ~/.codex/skills/voxsmith
+```
+
+```powershell
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.codex\skills\voxsmith" -Target "$env:USERPROFILE\.claude\skills\voxsmith"
+```
+
+**Without an agent.** Nothing in the workflow needs an agent framework. Run the
+scripts directly, or wire them into a build step or a CI job:
+
+```bash
+python scripts/tts.py --input script.txt --output intro.mp3
+```
+
+**On another harness.** Point the agent at `SKILL.md` as instructions, or add a
+one-line pointer in whatever file that harness reads. `agents/openai.yaml` is
+Codex-specific interface metadata; other harnesses can ignore it.
 
 ### Usage
 
@@ -169,7 +210,7 @@ audio:
 voxsmith/
 |-- SKILL.md                 Instructions Codex loads when the skill is used
 |-- README.md                This file
-|-- agents/openai.yaml       UI metadata
+|-- agents/openai.yaml       Codex interface metadata (ignored elsewhere)
 |-- assets/icon.svg          Logo
 |-- references/engines.md    Engine trade-offs, voice ids, operating notes
 `-- scripts/
@@ -186,11 +227,15 @@ MIT — see [LICENSE](LICENSE).
 
 ## 中文
 
-**通用型文本转语音技能：把任意文本转成朗读 MP3，音色统一、音量统一。**
+**把任意文本转成朗读 MP3，音色统一、音量统一。**
+
+<sub>通用型技能，不绑定任何单一 agent：同一个目录既能在 Codex、Claude Code 以及其他 agent harness 中使用，也能直接在命令行调用。</sub>
 
 ### 这是什么
 
-VoxSmith 是一个**通用型**的文本转语音 Codex 技能。它不限定题材、语言，也不预设音频会用在什么场合。给它任意一个 UTF-8 文本文件，它会返回一个可以直接使用的朗读 MP3：自动挑选在本机可用的语音引擎、合成音频、统一响度，并输出一份说明本次生成结果的报告。
+VoxSmith 是一个**通用型**的文本转语音技能。它不限定题材、语言，也不预设音频会用在什么场合，更不绑定运行它的 agent。给它任意一个 UTF-8 文本文件，它会返回一个可以直接使用的朗读 MP3：自动挑选在本机可用的语音引擎、合成音频、统一响度，并输出一份说明本次生成结果的报告。
+
+它的说明就是一个普通的 `SKILL.md`，真正干活的是一套普通 Python 脚本，只与语音引擎、ffmpeg 和网络打交道。没有 SDK、不需要 API key，也不依赖任何特定的 agent 运行时，所以同一个目录既能给 Codex、Claude Code 或其他 agent harness 使用，也能完全脱离 agent，直接在命令行里调用。
 
 正因为是通用技能，它既适合临时转换一次，也适合需要反复使用的稿子——面试自我介绍、演讲稿的各个章节、文章朗读、学习笔记，以及配音草稿。
 
@@ -199,6 +244,7 @@ VoxSmith 是一个**通用型**的文本转语音 Codex 技能。它不限定题
 | 能力 | 说明 |
 | --- | --- |
 | **任意内容都能用** | 没有领域假设：技术论文、小说、教学材料、播报文案、个人稿件一视同仁 |
+| **任何 agent 都能跑** | 一个普通的 `SKILL.md` 目录加一套无额外依赖的 Python 脚本：没有 SDK、不需要 API key、不绑定特定运行时 |
 | **朗读单篇文稿** | 一条命令把文本文件转成 MP3，音色、语速、停顿长度都可控 |
 | **整组统一音色** | 批量模式为所有段落锁定同一个引擎和同一个音色，多章节录音听起来像同一个人的声音 |
 | **多段合并成一个文件** | 可选的合并步骤按顺序把各段拼成单一成品 |
@@ -228,23 +274,47 @@ VoxSmith 是一个**通用型**的文本转语音 Codex 技能。它不限定题
 
 可用音色取决于引擎。本地 Piper 引擎通过其音色库覆盖数十种语言，Google 引擎接受语言代码，Edge 神经语音覆盖广泛的地区口音。
 
+下载的音色模型缓存在 `~/.cache/voxsmith`（Windows 下为 `%LOCALAPPDATA%\voxsmith`）。设置 `VOXSMITH_HOME` 可以改变缓存位置，例如让多个 agent harness 共用同一份缓存。
+
 ### 安装
 
-把仓库克隆到 Codex 的 skills 目录。
+把仓库克隆到你所使用的 agent 会读取的 skills 目录。目录内容对所有 agent 都是同一份。
+
+| Agent | skills 目录 |
+| --- | --- |
+| Codex | `~/.codex/skills/` |
+| Claude Code | `~/.claude/skills/` |
+| 共享目录或其他 harness | `~/.agents/skills/` |
 
 Linux 和 macOS：
 
 ```bash
-git clone https://github.com/1183498834/voxsmith ~/.codex/skills/voxsmith
+git clone https://github.com/1183498834/voxsmith ~/.claude/skills/voxsmith
 ```
 
 Windows PowerShell：
 
 ```powershell
-git clone https://github.com/1183498834/voxsmith "$env:USERPROFILE\.codex\skills\voxsmith"
+git clone https://github.com/1183498834/voxsmith "$env:USERPROFILE\.claude\skills\voxsmith"
 ```
 
-之后直接说"把这段文字转成语音"，或者显式调用 `$voxsmith`。
+之后直接说"把这段文字转成语音"，或者按名字调用该技能。如果你的多个 agent 共用一个 skills 目录，克隆一次就够了；否则可以把它们指向同一份副本：
+
+```bash
+ln -s ~/.claude/skills/voxsmith ~/.codex/skills/voxsmith
+```
+
+```powershell
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.codex\skills\voxsmith" -Target "$env:USERPROFILE\.claude\skills\voxsmith"
+```
+
+**不使用 agent。** 整个流程不依赖任何 agent 框架，可以直接运行脚本，也可以接入构建步骤或 CI：
+
+```bash
+python scripts/tts.py --input script.txt --output intro.mp3
+```
+
+**用在其他 harness 上。** 把 `SKILL.md` 当作指令交给 agent，或者在该 harness 会读取的文件里加一行指引。`agents/openai.yaml` 是 Codex 专有的界面元数据，其他 harness 忽略即可。
 
 ### 用法
 
@@ -315,7 +385,7 @@ python scripts/tts.py --list-voices
 voxsmith/
 |-- SKILL.md                 使用技能时 Codex 加载的指令
 |-- README.md                本文件
-|-- agents/openai.yaml       界面元数据
+|-- agents/openai.yaml       Codex 界面元数据（其他 harness 忽略）
 |-- assets/icon.svg          图标
 |-- references/engines.md    引擎取舍、音色命名、操作说明
 `-- scripts/
