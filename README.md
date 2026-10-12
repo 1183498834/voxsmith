@@ -114,7 +114,7 @@ Common options:
 | `--voice` | Select a voice for that engine |
 | `--rate 1.05` | Read slightly slower, which suits scripts spoken aloud |
 | `--sentence-silence 0.45` | Lengthen the pause between sentences |
-| `--lufs -16` | Set the loudness target; `--lufs 0` leaves the level untouched |
+| `--lufs -16` | Set the loudness target in LUFS; `--lufs 0` leaves the level untouched |
 | `--concat full.mp3` | Join a batch into one file, in `--inputs` order |
 | `--bitrate`, `--sample-rate` | Control the output format |
 
@@ -261,7 +261,7 @@ python scripts/tts.py --list-voices
 | `--voice` | 为该引擎选择音色 |
 | `--rate 1.05` | 语速稍慢，适合需要朗读出来的稿子 |
 | `--sentence-silence 0.45` | 加长句间停顿 |
-| `--lufs -16` | 设定响度目标；`--lufs 0` 则保留原始音量 |
+| `--lufs -16` | 以 LUFS 为单位设定响度目标；`--lufs 0` 则保留原始音量 |
 | `--concat full.mp3` | 按 `--inputs` 顺序把批量结果合并成一个文件 |
 | `--bitrate`、`--sample-rate` | 控制输出格式 |
 
